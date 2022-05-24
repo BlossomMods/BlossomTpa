@@ -1,0 +1,31 @@
+{
+  "schemaVersion": 1,
+  "id": "blossom-tpa",
+  "version": "${version}",
+  "name": "BlossomTpa",
+  "description": "Blossom-series /tpa command and utilities",
+  "authors": [
+    "CodedSakura"
+  ],
+  "contact": {
+    "website": "https://blossom.codedsakura.dev",
+    "repo": "https://github.com/BlossomMods/BlossomTpa"
+  },
+  "license": "MIT",
+  "icon": "assets/blossom-warps/icon.png",
+  "environment": "*",
+  "entrypoints": {
+    "main": [
+      "dev.codedsakura.blossom.tpa.BlossomTpa"
+    ]
+  },
+  "mixins": [],
+  "depends": {
+    "fabricloader": ">=0.14.3",
+    "minecraft": "1.18.2",
+    "blossom-lib": "${blossomlib_version}"
+  },
+  "suggests": {
+    "fabric-permissions-api-v0": "*"
+  }
+}
