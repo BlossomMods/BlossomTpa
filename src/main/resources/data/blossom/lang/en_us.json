@@ -1,1 +1,8 @@
-{}
+{
+  "blossom.tpa.fail.to-self": "Cannot teleport to self!",
+  "blossom.tpa.fail.similar": "A tpa between you and %s already exists!",
+  "blossom.tpa.to.start.initiator": "You have initiated a tpa to %3$s!",
+  "blossom.tpa.to.start.receiver": "%2$s has initiated a tpa to you!",
+  "blossom.tpa.to.timeout.initiator": "After %s seconds of inactivity, your tpa to %3$s has timed out!",
+  "blossom.tpa.to.timeout.receiver": "After %s seconds of inactivity, a tpa from %2$s has timed out!"
+}
