@@ -18,16 +18,16 @@ class TpaRequest {
 
     private Timer timer;
 
-    TpaRequest(ServerPlayerEntity teleportWho, ServerPlayerEntity teleportTo, boolean tpaHere) {
-        this.teleportWho = teleportWho;
-        this.teleportTo = teleportTo;
+    TpaRequest(ServerPlayerEntity initiator, ServerPlayerEntity receiver, boolean tpaHere) {
+        this.initiator = initiator;
+        this.receiver = receiver;
         this.tpaHere = tpaHere;
         if (tpaHere) {
-            this.initiator = teleportTo;
-            this.receiver = teleportWho;
+            this.teleportWho = receiver;
+            this.teleportTo = initiator;
         } else {
-            this.initiator = teleportWho;
-            this.receiver = teleportTo;
+            this.teleportWho = initiator;
+            this.teleportTo = receiver;
         }
     }
 

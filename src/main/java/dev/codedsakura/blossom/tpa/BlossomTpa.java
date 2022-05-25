@@ -25,30 +25,35 @@ public class BlossomTpa implements ModInitializer {
     @Override
     public void onInitialize() {
         BlossomLib.addCommand(literal("tpa")
-            .requires(Permissions.require("blossom.tpa.tpa", true))
+            .requires(Permissions.require("blossom.tpa", true))
             .then(argument("target", EntityArgumentType.player())
-                .executes(this::runTpa)));
+                .executes(this::runTpaTo)));
+
+        BlossomLib.addCommand(literal("tpahere")
+            .requires(Permissions.require("blossom.tpa.here", true))
+            .then(argument("target", EntityArgumentType.player())
+                .executes(this::runTpaHere)));
 
         BlossomLib.addCommand(literal("tpaaccept")
-            .requires(Permissions.require("blossom.tpa.tpa", true))
+            .requires(Permissions.require("blossom.tpa", true))
             .executes(this::acceptTpaAuto)
             .then(argument("target", EntityArgumentType.player())
                 .executes(this::acceptTpaTarget)));
     }
 
 
-    private int runTpa(CommandContext<ServerCommandSource> ctx) throws CommandSyntaxException {
-        ServerPlayerEntity teleportWho = ctx.getSource().getPlayer();
-        ServerPlayerEntity teleportTo = EntityArgumentType.getPlayer(ctx, "target");
+    private int runTpa(CommandContext<ServerCommandSource> ctx, boolean tpaHere) throws CommandSyntaxException {
+        ServerPlayerEntity initiator = ctx.getSource().getPlayer();
+        ServerPlayerEntity receiver = EntityArgumentType.getPlayer(ctx, "target");
 
-        if (teleportWho.equals(teleportTo)) {
+        if (initiator.equals(receiver)) {
             TextUtils.sendErr(ctx, "blossom.tpa.fail.to-self");
             return Command.SINGLE_SUCCESS;
         }
 
-        final TpaRequest tpaRequest = new TpaRequest(teleportWho, teleportTo, false);
+        final TpaRequest tpaRequest = new TpaRequest(initiator, receiver, tpaHere);
         if (activeTpas.stream().anyMatch(tpaRequest::similarTo)) {
-            TextUtils.sendErr(ctx, "blossom.tpa.fail.similar", teleportTo);
+            TextUtils.sendErr(ctx, "blossom.tpa.fail.similar", receiver);
             return Command.SINGLE_SUCCESS;
         }
 
@@ -58,6 +63,14 @@ public class BlossomTpa implements ModInitializer {
         return Command.SINGLE_SUCCESS;
     }
 
+    private int runTpaTo(CommandContext<ServerCommandSource> ctx) throws CommandSyntaxException {
+        return runTpa(ctx, false);
+    }
+
+    private int runTpaHere(CommandContext<ServerCommandSource> ctx) throws CommandSyntaxException {
+        return runTpa(ctx, true);
+    }
+
 
     private int acceptTpa(CommandContext<ServerCommandSource> ctx, ServerPlayerEntity initiator) {
         Optional<TpaRequest> tpaRequestOptional = activeTpas.stream()
@@ -65,7 +78,7 @@ public class BlossomTpa implements ModInitializer {
             .findFirst();
 
         if (tpaRequestOptional.isEmpty()) {
-            TextUtils.sendErr(ctx, "blossom.tpa.accept.fail.none-from", initiator);
+            TextUtils.sendErr(ctx, "blossom.tpa.fail.none-from", initiator);
             return Command.SINGLE_SUCCESS;
         }
 
