@@ -1,8 +1,13 @@
 {
   "blossom.tpa.fail.to-self": "Cannot teleport to self!",
   "blossom.tpa.fail.similar": "A tpa between you and %s already exists!",
+  "blossom.tpa.fail.multiple": "You have multiple ongoing tpas!",
+  "blossom.tpa.fail.none": "You have no ongoing tpas!",
+  "blossom.tpa.accept.fail.none-from": "You have no tpas from %s!",
   "blossom.tpa.to.start.initiator": "You have initiated a tpa to %3$s!",
   "blossom.tpa.to.start.receiver": "%2$s has initiated a tpa to you!",
   "blossom.tpa.to.timeout.initiator": "After %s seconds of inactivity, your tpa to %3$s has timed out!",
-  "blossom.tpa.to.timeout.receiver": "After %s seconds of inactivity, a tpa from %2$s has timed out!"
+  "blossom.tpa.to.timeout.receiver": "After %s seconds of inactivity, a tpa from %2$s has timed out!",
+  "blossom.tpa.to.accept.initiator": "%3$s has accepted your tpa!",
+  "blossom.tpa.to.accept.receiver": "You have accepted the tpa from %2$s!"
 }

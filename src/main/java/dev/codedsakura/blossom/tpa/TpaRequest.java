@@ -14,7 +14,7 @@ class TpaRequest {
     final ServerPlayerEntity teleportTo;
     final ServerPlayerEntity initiator;
     final ServerPlayerEntity receiver;
-    private final boolean tpaHere;
+    final boolean tpaHere;
 
     private Timer timer;
 
@@ -37,11 +37,6 @@ class TpaRequest {
     }
 
     void startTimeout(Runnable onTimeout) {
-        Object[] args = {
-            BlossomTpa.CONFIG.timeout,
-            initiator,
-            receiver
-        };
         String translationKeyPrefix = tpaHere ? TRANSLATION_KEY_TPA_HERE : TRANSLATION_KEY_TPA_TO;
         timer = new Timer();
         timer.schedule(
@@ -49,15 +44,27 @@ class TpaRequest {
                 @Override
                 public void run() {
                     BlossomTpa.LOGGER.info("{} timed out", this);
-                    initiator.sendMessage(TextUtils.fTranslation(translationKeyPrefix + ".timeout.initiator", TextUtils.Type.ERROR, args), false);
-                    receiver.sendMessage(TextUtils.fTranslation(translationKeyPrefix + ".timeout.receiver", TextUtils.Type.ERROR, args), false);
+                    initiator.sendMessage(TextUtils.fTranslation(translationKeyPrefix + ".timeout.initiator", TextUtils.Type.ERROR, toArgs()), false);
+                    receiver.sendMessage(TextUtils.fTranslation(translationKeyPrefix + ".timeout.receiver", TextUtils.Type.ERROR, toArgs()), false);
                     onTimeout.run();
                 }
             },
             BlossomTpa.CONFIG.timeout * 1000L
         );
-        initiator.sendMessage(TextUtils.translation(translationKeyPrefix + ".start.initiator", args), false);
-        receiver.sendMessage(TextUtils.translation(translationKeyPrefix + ".start.receiver", args), false);
+        initiator.sendMessage(TextUtils.translation(translationKeyPrefix + ".start.initiator", toArgs()), false);
+        receiver.sendMessage(TextUtils.translation(translationKeyPrefix + ".start.receiver", toArgs()), false);
+    }
+
+    void cancelTimeout() {
+        timer.cancel();
+    }
+
+    Object[] toArgs() {
+        return new Object[]{
+            BlossomTpa.CONFIG.timeout,
+            initiator,
+            receiver
+        };
     }
 
     @Override
