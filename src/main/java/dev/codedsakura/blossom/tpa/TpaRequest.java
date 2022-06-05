@@ -3,7 +3,6 @@ package dev.codedsakura.blossom.tpa;
 import dev.codedsakura.blossom.lib.TextUtils;
 import net.minecraft.server.network.ServerPlayerEntity;
 
-import java.util.Objects;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -65,22 +64,6 @@ class TpaRequest {
             initiator,
             receiver
         };
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        if (obj == this) return true;
-        if (obj == null || obj.getClass() != this.getClass()) return false;
-        var that = (TpaRequest) obj;
-        return Objects.equals(this.teleportWho, that.teleportWho) &&
-            Objects.equals(this.teleportTo, that.teleportTo) &&
-            Objects.equals(this.initiator, that.initiator) &&
-            Objects.equals(this.receiver, that.receiver);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(teleportWho, teleportTo, initiator, receiver);
     }
 
     @Override
