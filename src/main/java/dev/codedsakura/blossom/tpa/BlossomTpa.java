@@ -18,7 +18,7 @@ import static net.minecraft.server.command.CommandManager.argument;
 import static net.minecraft.server.command.CommandManager.literal;
 
 public class BlossomTpa implements ModInitializer {
-    static BlossomTpaConfig CONFIG = BlossomConfig.load(BlossomTpaConfig.class, "BlossomTpa.json");
+    static BlossomTpaConfig CONFIG = ConfigManager.register(BlossomTpaConfig.class, "BlossomTpa.json", newConfig -> CONFIG = newConfig);
     public static final Logger LOGGER = CustomLogger.createLogger("BlossomTpa");
     private final ArrayList<TpaRequest> activeTpas = new ArrayList<>();
 
