@@ -21,7 +21,7 @@ repositories {
 
 dependencies {
     minecraft "com.mojang:minecraft:${project.minecraft_version}"
-    mappings "net.fabricmc:yarn:${project.yarn_mappings}:v2"
+    mappings "net.fabricmc:yarn:${project.minecraft_version}+${project.yarn_mappings}:v2"
     modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
 
     modImplementation "dev.codedsakura.blossom:blossom-lib:${project.blossomlib_version}+${project.minecraft_version}"
@@ -75,7 +75,7 @@ publishing {
     repositories {
         maven {
             name = "GitHubPackages"
-            url = uri("https://maven.pkg.github.com/BlossomMods/BlossomWarps")
+            url = uri("https://maven.pkg.github.com/BlossomMods/BlossomTpa")
             credentials {
                 username = System.getenv("USERNAME")
                 password = System.getenv("TOKEN")
