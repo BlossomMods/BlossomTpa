@@ -1,5 +1,6 @@
 package dev.codedsakura.blossom.tpa;
 
+import dev.codedsakura.blossom.lib.CommandTextBuilder;
 import dev.codedsakura.blossom.lib.TextUtils;
 import net.minecraft.server.network.ServerPlayerEntity;
 
@@ -42,7 +43,7 @@ class TpaRequest {
             new TimerTask() {
                 @Override
                 public void run() {
-                    BlossomTpa.LOGGER.info("{} timed out", this);
+                    BlossomTpa.LOGGER.info("{} timed out", TpaRequest.this);
                     initiator.sendMessage(TextUtils.fTranslation(translationKeyPrefix + ".timeout.initiator", TextUtils.Type.ERROR, toArgs()), false);
                     receiver.sendMessage(TextUtils.fTranslation(translationKeyPrefix + ".timeout.receiver", TextUtils.Type.ERROR, toArgs()), false);
                     onTimeout.run();
@@ -60,9 +61,18 @@ class TpaRequest {
 
     Object[] toArgs() {
         return new Object[]{
-            BlossomTpa.CONFIG.timeout,
-            initiator,
-            receiver
+                BlossomTpa.CONFIG.timeout,
+                initiator,
+                receiver,
+                new CommandTextBuilder("/tpacancel")
+                        .setCommandRun("/tpacancel " + receiver.getEntityName())
+                        .setHoverShowRun(),
+                new CommandTextBuilder("/tpaaccept")
+                        .setCommandRun("/tpaaccept " + initiator.getEntityName())
+                        .setHoverShowRun(),
+                new CommandTextBuilder("/tpadeny")
+                        .setCommandRun("/tpadeny " + initiator.getEntityName())
+                        .setHoverShowRun(),
         };
     }
 

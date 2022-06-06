@@ -12,7 +12,7 @@
     "repo": "https://github.com/BlossomMods/BlossomTpa"
   },
   "license": "MIT",
-  "icon": "assets/blossom-warps/icon.png",
+  "icon": "assets/blossom-tpa/icon.png",
   "environment": "*",
   "entrypoints": {
     "main": [

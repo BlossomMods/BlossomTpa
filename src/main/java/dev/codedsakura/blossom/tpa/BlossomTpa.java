@@ -93,7 +93,7 @@ public class BlossomTpa implements ModInitializer {
 
         if (tpaRequestOptional.isEmpty()) {
             if (resolveState == ResolveState.CANCEL) {
-                TextUtils.sendErr(ctx, "blossom.tpa.cancel.fail.none-to", receiver);
+                TextUtils.sendErr(ctx, "blossom.tpa.fail.cancel.none-to", receiver);
             } else {
                 TextUtils.sendErr(ctx, "blossom.tpa.fail.none-from", initiator);
             }
