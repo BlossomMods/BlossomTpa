@@ -1,6 +1,10 @@
+# 1.0.0
+
+* Add icon
+
 # 1.0.0-rc.2
 
-* fix typos
+* Fix typos
 
 # 1.0.0-rc.1
 
