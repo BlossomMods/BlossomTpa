@@ -17,25 +17,23 @@ BlossomTpa is a Minecraft Fabric mod in the Blossom-series mods that provides /t
 
 ## Config
 
-`teleportation`: [TeleportationConfig](https://github.com/BlossomMods/BlossomLib/blob/main/README.md#teleportationconfig)
--
-teleportation settings  
+`teleportation`: [TeleportationConfig](https://github.com/BlossomMods/BlossomLib/blob/main/README.md#teleportationconfig) - teleportation settings  
 `timeout`: int - (seconds), how long a tpa/tpahere request is active before it timeouts  
 `standStill`: int - (seconds), how long the player has to stand still before being teleported  
-`cooldown`: int - (seconds), how long the player has to wait after teleporting using this command, before
-being able to teleport again
+`cooldown`: int - (seconds), how long the player has to wait after teleporting using this command, before being able to
+teleport again
 
 ## Commands & their permissions
 
-- `tpa <target>` - initiates a tpa request to `<target>`  
+- `/tpa <target>` - initiates a tpa request to `<target>`  
   Permission: `blossom.tpa` (default: true)
-- `tpahere <target>` - initiates a tpahere request for `<target>`  
+- `/tpahere <target>` - initiates a tpahere request for `<target>`  
   Permission: `blossom.tpa.here` (default: true)
-- `tpaaccept [<target>]` - accepts a tpa/tpahere request from `<target>`  
+- `/tpaaccept [<target>]` - accepts a tpa/tpahere request from `<target>`  
   Permission: `blossom.tpa` (default: true)
-- `tpadeny [<target>]` - denies a tpa/tpahere request from `<target>`  
+- `/tpadeny [<target>]` - denies a tpa/tpahere request from `<target>`  
   Permission: `blossom.tpa` (default: true)
-- `tpacancel [<target>]` - cancels a tpa/tpahere request to `<target>`  
+- `/tpacancel [<target>]` - cancels a tpa/tpahere request to `<target>`  
   Permission: `blossom.tpa` (default: true)
 
 ## Translation keys
