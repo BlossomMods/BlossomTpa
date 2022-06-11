@@ -10,3 +10,6 @@ ij_continuation_indent_size = 8
 
 [*.{json,md}]
 indent_size = 2
+
+[*.properties]
+ij_properties_keep_blank_lines = true
