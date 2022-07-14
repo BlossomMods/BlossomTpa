@@ -1,6 +1,7 @@
 package dev.codedsakura.blossom.tpa;
 
-import dev.codedsakura.blossom.lib.TeleportConfig;
+
+import dev.codedsakura.blossom.lib.teleport.TeleportConfig;
 
 public class BlossomTpaConfig {
     TeleportConfig teleportation = null;

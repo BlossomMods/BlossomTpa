@@ -1,7 +1,7 @@
 package dev.codedsakura.blossom.tpa;
 
-import dev.codedsakura.blossom.lib.CommandTextBuilder;
-import dev.codedsakura.blossom.lib.TextUtils;
+import dev.codedsakura.blossom.lib.text.CommandTextBuilder;
+import dev.codedsakura.blossom.lib.text.TextUtils;
 import net.minecraft.server.network.ServerPlayerEntity;
 
 import java.util.Timer;

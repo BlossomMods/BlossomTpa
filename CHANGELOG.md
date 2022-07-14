@@ -1,3 +1,8 @@
+# 2.0.0
+
+* Update to BlossomLib 2
+* Update CI
+
 # 1.0.0
 
 * Add icon
