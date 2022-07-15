@@ -60,7 +60,7 @@ public class BlossomTpa implements ModInitializer {
 
 
     private int runTpa(CommandContext<ServerCommandSource> ctx, boolean tpaHere) throws CommandSyntaxException {
-        ServerPlayerEntity initiator = ctx.getSource().getPlayerOrThrow();
+        ServerPlayerEntity initiator = ctx.getSource().getPlayer();
         ServerPlayerEntity receiver = EntityArgumentType.getPlayer(ctx, "target");
 
         if (initiator.equals(receiver)) {
@@ -129,17 +129,17 @@ public class BlossomTpa implements ModInitializer {
         return Command.SINGLE_SUCCESS;
     }
 
-    private int resolveTpaAuto(CommandContext<ServerCommandSource> ctx, ResolveState resolveState) {
+    private int resolveTpaAuto(CommandContext<ServerCommandSource> ctx, ResolveState resolveState) throws CommandSyntaxException {
         List<TpaRequest> candidates;
         if (resolveState == ResolveState.CANCEL) {
             ServerPlayerEntity initiator = ctx.getSource().getPlayer();
             candidates = activeTpas.stream()
-                .filter(request -> request.initiator.equals(initiator))
-                .toList();
+                    .filter(request -> request.initiator.equals(initiator))
+                    .toList();
         } else {
             ServerPlayerEntity receiver = ctx.getSource().getPlayer();
             candidates = activeTpas.stream()
-                .filter(request -> request.receiver.equals(receiver))
+                    .filter(request -> request.receiver.equals(receiver))
                 .toList();
         }
 
@@ -157,7 +157,7 @@ public class BlossomTpa implements ModInitializer {
     }
 
 
-    private int acceptTpaAuto(CommandContext<ServerCommandSource> ctx) {
+    private int acceptTpaAuto(CommandContext<ServerCommandSource> ctx) throws CommandSyntaxException {
         return resolveTpaAuto(ctx, ResolveState.ACCEPT);
     }
 
@@ -168,7 +168,7 @@ public class BlossomTpa implements ModInitializer {
     }
 
 
-    private int denyTpaAuto(CommandContext<ServerCommandSource> ctx) {
+    private int denyTpaAuto(CommandContext<ServerCommandSource> ctx) throws CommandSyntaxException {
         return resolveTpaAuto(ctx, ResolveState.DENY);
     }
 
@@ -179,7 +179,7 @@ public class BlossomTpa implements ModInitializer {
     }
 
 
-    private int cancelTpaAuto(CommandContext<ServerCommandSource> ctx) {
+    private int cancelTpaAuto(CommandContext<ServerCommandSource> ctx) throws CommandSyntaxException {
         return resolveTpaAuto(ctx, ResolveState.CANCEL);
     }
 
