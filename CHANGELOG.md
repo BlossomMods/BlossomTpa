@@ -1,3 +1,8 @@
+# 2.1.0
+
+* Add Modrinth to CI
+* Bump BlossomLib version
+
 # 2.0.0
 
 * Update to BlossomLib 2

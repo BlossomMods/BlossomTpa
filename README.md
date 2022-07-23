@@ -17,7 +17,11 @@ BlossomTpa is a Minecraft Fabric mod in the Blossom-series mods that provides /t
 
 ## Config
 
-`teleportation`: [TeleportationConfig](https://github.com/BlossomMods/BlossomLib/blob/main/README.md#teleportationconfig) - teleportation settings  
+This mod's config file can be found at `config/BlossomMods/BlossomTPA.json`, after running the server with
+the mod at least once.
+
+`teleportation`: [TeleportationConfig](https://github.com/BlossomMods/BlossomLib/blob/main/README.md#teleportationconfig)
+- teleportation settings  
 `timeout`: int - (seconds), how long a tpa/tpahere request is active before it timeouts  
 `standStill`: int - (seconds), how long the player has to stand still before being teleported  
 `cooldown`: int - (seconds), how long the player has to wait after teleporting using this command, before being able to

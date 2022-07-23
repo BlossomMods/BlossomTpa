@@ -1,7 +1,7 @@
-//file:noinspection GradlePackageVersionRange
 plugins {
     id 'fabric-loom' version '0.12-SNAPSHOT'
     id 'maven-publish'
+    id "com.modrinth.minotaur" version "2.+"
 }
 
 version = "${project.mod_version}+${project.minecraft_version}"
@@ -40,19 +40,12 @@ processResources {
     }
 }
 
-def targetJavaVersion = 17
 tasks.withType(JavaCompile).configureEach {
     it.options.encoding = "UTF-8"
-    if (targetJavaVersion >= 10 || JavaVersion.current().isJava10Compatible()) {
-        it.options.release = targetJavaVersion
-    }
+    it.options.release = 17
 }
 
 java {
-    def javaVersion = JavaVersion.toVersion(targetJavaVersion)
-    if (JavaVersion.current() < javaVersion) {
-        toolchain.languageVersion = JavaLanguageVersion.of(targetJavaVersion)
-    }
     archivesBaseName = project.archives_base_name
 
     withSourcesJar()
@@ -64,7 +57,6 @@ jar {
     }
 }
 
-// configure the maven publication
 publishing {
     publications {
         gpr(MavenPublication) {
@@ -76,7 +68,7 @@ publishing {
     repositories {
         maven {
             name = "GitHubPackages"
-            url = uri("https://maven.pkg.github.com/BlossomMods/BlossomTpa")
+            url = uri("https://maven.pkg.github.com/BlossomMods/${project.mod_slug}")
             credentials {
                 username = System.getenv("USERNAME")
                 password = System.getenv("TOKEN")
@@ -84,3 +76,19 @@ publishing {
         }
     }
 }
+
+modrinth {
+    projectId = "${project.mod_slug}"
+    versionType = "beta"
+    uploadFile = remapJar
+    changelog = System.getenv("CHANGELOG_PATH") ? rootProject.file(System.getenv("CHANGELOG_PATH")).text : ""
+    gameVersions = [((String) project.minecraft_version)]
+    loaders = ["fabric", "quilt"]
+    dependencies {
+        required.project "BlossomLib"
+    }
+    syncBodyFrom = rootProject.file("README.md").text
+}
+
+tasks.modrinth.dependsOn tasks.modrinthSyncBody
+tasks.publish.dependsOn tasks.modrinth
