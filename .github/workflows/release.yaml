@@ -96,6 +96,6 @@ jobs:
         uses: ncipollo/release-action@v1
         with:
           artifacts: "build/libs/*.jar"
-          prerelease: true
+          prerelease: false
           token: ${{ secrets.PA_TOKEN }}
           bodyFile: ./changelog.out.md

@@ -1,3 +1,7 @@
+# 2.0.2
+
+* Update CI
+
 # 2.0.1
 
 * Add Modrinth to CI

@@ -60,10 +60,7 @@ public class BlossomTpa implements ModInitializer {
 
 
     private int runTpa(CommandContext<ServerCommandSource> ctx, boolean tpaHere) throws CommandSyntaxException {
-        ServerPlayerEntity initiator = ctx.getSource().getPlayer();
-        if (initiator == null) {
-            throw ServerCommandSource.REQUIRES_PLAYER_EXCEPTION.create();
-        }
+        ServerPlayerEntity initiator = ctx.getSource().getPlayerOrThrow();
         ServerPlayerEntity receiver = EntityArgumentType.getPlayer(ctx, "target");
 
         if (initiator.equals(receiver)) {

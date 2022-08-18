@@ -33,7 +33,7 @@ processResources {
     filteringCharset "UTF-8"
 
     filesMatching("fabric.mod.json") {
-        expand (
+        expand(
                 "version": project.version,
                 "blossomlib_version": project.blossomlib_version
         )
@@ -79,7 +79,7 @@ publishing {
 
 modrinth {
     projectId = "${project.mod_slug}"
-    versionType = "beta"
+    versionType = "release"
     uploadFile = remapJar
     changelog = System.getenv("CHANGELOG_PATH") ? rootProject.file(System.getenv("CHANGELOG_PATH")).text : ""
     gameVersions = [((String) project.minecraft_version)]
