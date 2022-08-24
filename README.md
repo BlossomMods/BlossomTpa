@@ -92,3 +92,5 @@ Note on terms used here:
   command, /tpadeny command
 - `blossom.tpa.here.cancel.receiver`: 6 arguments - timeout length, initiator, receiver, /tpacancel command, /tpaaccept
   command, /tpadeny command
+
+`zh_cn` (Chinese, Simplified), `zh_tw` (Chinese, Traditional) - added by @BackWheel

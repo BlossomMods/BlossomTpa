@@ -1,3 +1,7 @@
+# 2.0.3
+
+* Add Chinese translations (Simplified & Traditional), courtesy of @BackWheel
+
 # 2.0.2
 
 * Update CI
