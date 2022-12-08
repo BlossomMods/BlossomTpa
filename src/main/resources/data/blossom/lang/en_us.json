@@ -1,5 +1,6 @@
 {
   "blossom.tpa.fail.to-self": "Cannot teleport to self!",
+  "blossom.tpa.fail.disallowed": "%s can't receive tpas!",
   "blossom.tpa.fail.similar": "A tpa between you and %s already exists!",
   "blossom.tpa.fail.multiple": "You have multiple ongoing tpas!",
   "blossom.tpa.fail.none": "You have no ongoing tpas!",
