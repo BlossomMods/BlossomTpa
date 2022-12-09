@@ -40,6 +40,9 @@ teleport again
 - `/tpacancel [<target>]` - cancels a tpa/tpahere request to `<target>`  
   Permission: `blossom.tpa` (default: true)
 
+A player with the permission `blossom.tpa.disallowed` will not be able to receive tpa requests.
+The player sending the tpa request will receive a warning message, while the player receiving the request will see nothing.
+
 ## Translation keys
 
 Only keys with available arguments are shown, for full list, please see
@@ -49,7 +52,11 @@ Note on terms used here:
 "initiator" - player who initiated the tpa/tpahere request and can /tpacancel it  
 "receiver" - player who's received a tpa/tpahere request and has to /tpaaccept or /tpadeny it
 
+- `blossom.tpa.fail.to-self`: 0 arguments
+- `blossom.tpa.fail.disallowed`: 1 argument - receiver
 - `blossom.tpa.fail.similar`: 1 argument - receiver
+- `blossom.tpa.fail.multiple`: 0 arguments
+- `blossom.tpa.fail.none`: 0 arguments
 - `blossom.tpa.fail.none-from`: 1 argument - initiator
 - `blossom.tpa.fail.cancel.none-to`: 1 argument - receiver
 - `blossom.tpa.to.start.initiator`: 6 arguments - timeout length, initiator, receiver, /tpacancel command, /tpaaccept

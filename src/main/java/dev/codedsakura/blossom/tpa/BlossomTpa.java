@@ -68,6 +68,11 @@ public class BlossomTpa implements ModInitializer {
             return Command.SINGLE_SUCCESS;
         }
 
+        if (Permissions.check(receiver, "blossom.tpa.disallowed", false)) {
+            TextUtils.sendErr(ctx, "blossom.tpa.fail.disallowed", receiver);
+            return Command.SINGLE_SUCCESS;
+        }
+
         final TpaRequest tpaRequest = new TpaRequest(initiator, receiver, tpaHere);
         if (activeTpas.stream().anyMatch(tpaRequest::similarTo)) {
             TextUtils.sendErr(ctx, "blossom.tpa.fail.similar", receiver);
