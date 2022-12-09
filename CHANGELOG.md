@@ -1,3 +1,7 @@
+# 2.1.0
+
+* Add permission preventing players from receiving TPA requests (!7)
+
 # 2.0.3
 
 * Add Chinese translations (Simplified & Traditional), courtesy of @BackWheel
