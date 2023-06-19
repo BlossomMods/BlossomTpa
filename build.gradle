@@ -1,10 +1,11 @@
 plugins {
-    id 'fabric-loom' version '1.0-SNAPSHOT'
+    id 'fabric-loom' version '1.1-SNAPSHOT'
     id 'maven-publish'
     id "com.modrinth.minotaur" version "2.+"
 }
 
-version = "${project.mod_version}+${project.minecraft_version}"
+var mc_version = project.supported_versions.split(";")[0]
+version = "${project.mod_version}+${mc_version}"
 group = project.maven_group
 
 repositories {
@@ -25,7 +26,7 @@ dependencies {
     mappings "net.fabricmc:yarn:${project.minecraft_version}+${project.yarn_mappings}:v2"
     modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
 
-    modImplementation "dev.codedsakura.blossom:blossom-lib:${project.blossomlib_version}+${project.minecraft_version}"
+    modImplementation "dev.codedsakura.blossom:blossom-lib:${project.blossomlib_version}+${mc_version}"
 }
 
 processResources {
@@ -35,7 +36,8 @@ processResources {
     filesMatching("fabric.mod.json") {
         expand(
                 "version": project.version,
-                "blossomlib_version": project.blossomlib_version
+                "blossomlib_version": project.blossomlib_version,
+                "supported_versions": project.supported_versions.split(";").join("\",\""),
         )
     }
 }
@@ -82,7 +84,7 @@ modrinth {
     versionType = "release"
     uploadFile = remapJar
     changelog = System.getenv("CHANGELOG_PATH") ? rootProject.file(System.getenv("CHANGELOG_PATH")).text : ""
-    gameVersions = [((String) project.minecraft_version)]
+    gameVersions = project.supported_versions.split(";").toList()
     loaders = ["fabric", "quilt"]
     dependencies {
         required.project "BlossomLib"
