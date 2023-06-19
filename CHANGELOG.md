@@ -1,3 +1,7 @@
+# 2.1.1
+
+* Fix minecraft version in fabric.mod.json
+
 # 2.1.0
 
 * Add permission preventing players from receiving TPA requests (!7)
