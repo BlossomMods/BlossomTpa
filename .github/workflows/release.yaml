@@ -14,12 +14,8 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
 
-      - name: Get tag
-        id: tag
-        uses: dawidd6/action-get-tag@v1
-
       - name: Generate changelog
-        run: /bin/sh ./changes.sh ${{ steps.tag.outputs.tag }} ./changelog.out.md
+        run: /bin/sh ./changes.sh ${{ github.ref_name }} ./changelog.out.md
 
       - name: Upload changelog
         uses: actions/upload-artifact@v3
@@ -42,7 +38,6 @@ jobs:
         with:
           java-version: '17'
           distribution: 'temurin'
-          cache: 'gradle'
 
       - name: Download changelog
         uses: actions/download-artifact@v3
