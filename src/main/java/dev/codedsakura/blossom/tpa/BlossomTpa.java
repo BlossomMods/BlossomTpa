@@ -79,6 +79,33 @@ public class BlossomTpa implements ModInitializer {
         }
 
         final TpaRequest tpaRequest = new TpaRequest(initiator, receiver, tpaHere);
+
+
+        boolean forced = false;
+
+        if (tpaHere) {
+            if (Permissions.check(receiver, "blossom.tpa.accept.always.tpahere", false) ||
+                    Permissions.check(initiator, "blossom.tpa.accept.force.tpahere", false)) {
+                forced = true;
+            }
+        } else if (Permissions.check(receiver, "blossom.tpa.accept.always.tpa", false) ||
+                Permissions.check(initiator, "blossom.tpa.accept.force.tpa", false)) {
+            forced = true;
+        }
+
+        if (forced) {
+            TeleportUtils.teleport(
+                    CONFIG.teleportation,
+                    CONFIG.standStill,
+                    CONFIG.cooldown,
+                    BlossomTpa.class,
+                    tpaRequest.teleportWho,
+                    () -> new TeleportUtils.TeleportDestination(tpaRequest.teleportTo)
+            );
+            return Command.SINGLE_SUCCESS;
+        }
+
+
         if (activeTpas.stream().anyMatch(tpaRequest::similarTo)) {
             TextUtils.sendErr(ctx, "blossom.tpa.fail.similar", receiver);
             return Command.SINGLE_SUCCESS;

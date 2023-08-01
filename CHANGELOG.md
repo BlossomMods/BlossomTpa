@@ -1,6 +1,7 @@
 # 2.2.0
 
 * Add specific command permissions for more granular control
+* Add permissions to auto accept and force accepting tpa requests
 
 # 2.1.1
 

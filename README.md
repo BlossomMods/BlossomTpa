@@ -43,6 +43,15 @@ teleport again
 A player with the permission `blossom.tpa.disallowed` will not be able to receive tpa requests.
 The player sending the tpa request will receive a warning message, while the player receiving the request will see nothing.
 
+A player with the permission `blossom.tpa.accept.always.tpa` or `blossom.tpa.accept.always.tpahere`
+will always automatically accept any **incoming** tpa or tpahere request respectively.
+Neither of the players will receive any messages about the request.
+
+A player with the permission `blossom.tpa.accept.force.tpa` or `blossom.tpa.accept.force.tpahere`
+will always have any **outgoing** tpa or tpahere request (respectively) automatically forced to be accepted.
+Neither of the players will receive any messages about the request.
+This behaviour is similar to the vanilla `/tp` command, but with the stand-still period.
+
 ## Translation keys
 
 Only keys with available arguments are shown, for full list, please see
