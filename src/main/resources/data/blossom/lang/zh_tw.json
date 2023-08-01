@@ -1,5 +1,6 @@
 ﻿{
     "blossom.tpa.fail.to-self": "你無法傳送到自己身邊!",
+    "blossom.tpa.fail.disallowed": "%s 無法接收傳送指令!",
     "blossom.tpa.fail.similar": "你已向玩家 %s 發出了傳送請求!",
     "blossom.tpa.fail.multiple": "你有多個正在執行的傳送請求!",
     "blossom.tpa.fail.none": "你沒有收到任何傳送請求!",
