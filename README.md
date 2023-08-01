@@ -30,15 +30,15 @@ teleport again
 ## Commands & their permissions
 
 - `/tpa <target>` - initiates a tpa request to `<target>`  
-  Permission: `blossom.tpa` (default: true)
+  Permission: `blossom.tpa` (default: true) OR `blossom.tpa.command.tpa` (default: true)
 - `/tpahere <target>` - initiates a tpahere request for `<target>`  
-  Permission: `blossom.tpa.here` (default: true)
+  Permission: `blossom.tpa.here` (default: true) OR `blossom.tpa.command.tpahere` (default: true)
 - `/tpaaccept [<target>]` - accepts a tpa/tpahere request from `<target>`  
-  Permission: `blossom.tpa` (default: true)
+  Permission: `blossom.tpa` (default: true) OR `blossom.tpa.command.tpaaccept` (default: true)
 - `/tpadeny [<target>]` - denies a tpa/tpahere request from `<target>`  
-  Permission: `blossom.tpa` (default: true)
+  Permission: `blossom.tpa` (default: true) OR `blossom.tpa.command.tpadeny` (default: true)
 - `/tpacancel [<target>]` - cancels a tpa/tpahere request to `<target>`  
-  Permission: `blossom.tpa` (default: true)
+  Permission: `blossom.tpa` (default: true) OR `blossom.tpa.command.tpacancel` (default: true)
 
 A player with the permission `blossom.tpa.disallowed` will not be able to receive tpa requests.
 The player sending the tpa request will receive a warning message, while the player receiving the request will see nothing.

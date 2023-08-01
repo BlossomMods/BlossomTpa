@@ -30,29 +30,34 @@ public class BlossomTpa implements ModInitializer {
     @Override
     public void onInitialize() {
         BlossomLib.addCommand(literal("tpa")
-            .requires(Permissions.require("blossom.tpa", true))
+                .requires(Permissions.require("blossom.tpa", true)
+                        .or(Permissions.require("blossom.tpa.command.tpa", true)))
             .then(argument("target", EntityArgumentType.player())
                 .executes(this::runTpaTo)));
 
         BlossomLib.addCommand(literal("tpahere")
-            .requires(Permissions.require("blossom.tpa.here", true))
+                .requires(Permissions.require("blossom.tpa.here", true)
+                        .or(Permissions.require("blossom.tpa.command.tpahere", true)))
             .then(argument("target", EntityArgumentType.player())
                 .executes(this::runTpaHere)));
 
         BlossomLib.addCommand(literal("tpaaccept")
-            .requires(Permissions.require("blossom.tpa", true))
+                .requires(Permissions.require("blossom.tpa", true)
+                        .or(Permissions.require("blossom.tpa.command.tpaaccept", true)))
             .executes(this::acceptTpaAuto)
             .then(argument("target", EntityArgumentType.player())
                 .executes(this::acceptTpaTarget)));
 
         BlossomLib.addCommand(literal("tpadeny")
-            .requires(Permissions.require("blossom.tpa", true))
+                .requires(Permissions.require("blossom.tpa", true)
+                        .or(Permissions.require("blossom.tpa.command.tpadeny", true)))
             .executes(this::denyTpaAuto)
             .then(argument("target", EntityArgumentType.player())
                 .executes(this::denyTpaTarget)));
 
         BlossomLib.addCommand(literal("tpacancel")
-            .requires(Permissions.require("blossom.tpa", true))
+                .requires(Permissions.require("blossom.tpa", true)
+                        .or(Permissions.require("blossom.tpa.command.tpacancel", true)))
             .executes(this::cancelTpaAuto)
             .then(argument("target", EntityArgumentType.player())
                 .executes(this::cancelTpaTarget)));

@@ -1,3 +1,7 @@
+# 2.2.0
+
+* Add specific command permissions for more granular control
+
 # 2.1.1
 
 * Fix minecraft version in fabric.mod.json
