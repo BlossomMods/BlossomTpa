@@ -1,3 +1,7 @@
+# 2.2.1
+
+* Update to support 1.20.2
+
 # 2.2.0
 
 * Add specific command permissions for more granular control
