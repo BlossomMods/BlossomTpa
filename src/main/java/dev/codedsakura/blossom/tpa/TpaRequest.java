@@ -65,13 +65,13 @@ class TpaRequest {
                 initiator,
                 receiver,
                 new CommandTextBuilder("/tpacancel")
-                        .setCommandRun("/tpacancel " + receiver.getEntityName())
+                        .setCommandRun("/tpacancel " + receiver.getGameProfile().getName())
                         .setHoverShowRun(),
                 new CommandTextBuilder("/tpaaccept")
-                        .setCommandRun("/tpaaccept " + initiator.getEntityName())
+                        .setCommandRun("/tpaaccept " + initiator.getGameProfile().getName())
                         .setHoverShowRun(),
                 new CommandTextBuilder("/tpadeny")
-                        .setCommandRun("/tpadeny " + initiator.getEntityName())
+                        .setCommandRun("/tpadeny " + initiator.getGameProfile().getName())
                         .setHoverShowRun(),
         };
     }
