@@ -1,5 +1,5 @@
 plugins {
-    id 'fabric-loom' version '1.4-SNAPSHOT'
+    id 'fabric-loom' version '1.6-SNAPSHOT'
     id 'maven-publish'
     id "com.modrinth.minotaur" version "2.+"
 }
@@ -10,15 +10,9 @@ group = project.maven_group
 
 repositories {
     mavenLocal()
-    maven {
-        url "https://maven.pkg.github.com/BlossomMods/BlossomLib"
-        credentials {
-            username = System.getenv("USERNAME")
-            password = System.getenv("TOKEN")
-        }
-    }
     maven { url "https://maven.nucleoid.xyz" }
     maven { url 'https://oss.sonatype.org/content/repositories/snapshots' }
+    maven { url "https://maven.codedsakura.dev/releases" }
 }
 
 dependencies {
@@ -74,6 +68,14 @@ publishing {
             credentials {
                 username = System.getenv("USERNAME")
                 password = System.getenv("TOKEN")
+            }
+        }
+        maven {
+            name = "codedsakuraMavenReleases"
+            url = uri("https://maven.codedsakura.dev/releases")
+            credentials {
+                username = System.getenv("CS_USERNAME")
+                password = System.getenv("CS_TOKEN")
             }
         }
     }

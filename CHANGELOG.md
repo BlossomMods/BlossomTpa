@@ -1,3 +1,8 @@
+# 2.2.3
+
+* Update to support 1.20.6
+* Switch to self-hosted maven
+
 # 2.2.2
 
 * Update to support 1.20.4
