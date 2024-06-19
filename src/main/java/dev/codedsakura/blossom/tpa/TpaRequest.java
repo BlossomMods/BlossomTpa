@@ -64,14 +64,14 @@ class TpaRequest {
                 BlossomTpa.getConfig().timeout,
                 initiator,
                 receiver,
-                new CommandTextBuilder("/tpacancel")
-                        .setCommandRun("/tpacancel " + receiver.getGameProfile().getName())
+                new CommandTextBuilder("/%s".formatted(BlossomTpa.getConfig().commandOverrides.cancel))
+                        .setCommandRun("/%s %s".formatted(BlossomTpa.getConfig().commandOverrides.cancel, receiver.getGameProfile().getName()))
                         .setHoverShowRun(),
-                new CommandTextBuilder("/tpaaccept")
-                        .setCommandRun("/tpaaccept " + initiator.getGameProfile().getName())
+                new CommandTextBuilder("/%s".formatted(BlossomTpa.getConfig().commandOverrides.accept))
+                        .setCommandRun("/%s %s".formatted(BlossomTpa.getConfig().commandOverrides.accept, initiator.getGameProfile().getName()))
                         .setHoverShowRun(),
-                new CommandTextBuilder("/tpadeny")
-                        .setCommandRun("/tpadeny " + initiator.getGameProfile().getName())
+                new CommandTextBuilder("/%s".formatted(BlossomTpa.getConfig().commandOverrides.deny))
+                        .setCommandRun("/%s %s".formatted(BlossomTpa.getConfig().commandOverrides.deny, initiator.getGameProfile().getName()))
                         .setHoverShowRun(),
         };
     }

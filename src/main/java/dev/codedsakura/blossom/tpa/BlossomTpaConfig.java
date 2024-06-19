@@ -12,6 +12,8 @@ public class BlossomTpaConfig extends BlossomConfig {
 
     int timeout = 60;
 
+    CommandOverrides commandOverrides = new CommandOverrides();
+
     @Deprecated
     int standStill = 3;
     @Deprecated
@@ -28,7 +30,14 @@ public class BlossomTpaConfig extends BlossomConfig {
             teleportation = new TeleportConfig();
             teleportation.standStill = standStill;
             teleportation.cooldown = cooldown;
+            commandOverrides.accept = "tpaaccept";
         }
         return super.update();
+    }
+
+    static class CommandOverrides {
+        String accept = "tpaccept";
+        String deny = "tpadeny";
+        String cancel = "tpacancel";
     }
 }

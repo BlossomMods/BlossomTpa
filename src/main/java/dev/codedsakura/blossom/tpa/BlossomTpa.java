@@ -56,20 +56,20 @@ public class BlossomTpa extends BlossomMod<BlossomTpaConfig> implements ModIniti
             .then(argument("target", EntityArgumentType.player())
                 .executes(this::runTpaHere)));
 
-        addCommand(literal("tpaaccept")
-                .requires(Permissions.require("blossom.tpa.command.tpaaccept", true))
+        addCommand(literal(config.commandOverrides.accept)
+                .requires(Permissions.require("blossom.tpa.command.accept", true))
             .executes(this::acceptTpaAuto)
             .then(argument("target", EntityArgumentType.player())
                 .executes(this::acceptTpaTarget)));
 
-        addCommand(literal("tpadeny")
-                .requires(Permissions.require("blossom.tpa.command.tpadeny", true))
+        addCommand(literal(config.commandOverrides.deny)
+                .requires(Permissions.require("blossom.tpa.command.deny", true))
             .executes(this::denyTpaAuto)
             .then(argument("target", EntityArgumentType.player())
                 .executes(this::denyTpaTarget)));
 
-        addCommand(literal("tpacancel")
-                .requires(Permissions.require("blossom.tpa.command.tpacancel", true))
+        addCommand(literal(config.commandOverrides.cancel)
+                .requires(Permissions.require("blossom.tpa.command.cancel", true))
             .executes(this::cancelTpaAuto)
             .then(argument("target", EntityArgumentType.player())
                 .executes(this::cancelTpaTarget)));
