@@ -43,13 +43,13 @@ class TpaRequest {
             new TimerTask() {
                 @Override
                 public void run() {
-                    BlossomTpa.LOGGER.info("{} timed out", TpaRequest.this);
+                    BlossomTpa.getLogger().info("{} timed out", TpaRequest.this);
                     initiator.sendMessage(TextUtils.fTranslation(translationKeyPrefix + ".timeout.initiator", TextUtils.Type.ERROR, toArgs()), false);
                     receiver.sendMessage(TextUtils.fTranslation(translationKeyPrefix + ".timeout.receiver", TextUtils.Type.ERROR, toArgs()), false);
                     onTimeout.run();
                 }
             },
-            BlossomTpa.CONFIG.timeout * 1000L
+                BlossomTpa.getConfig().timeout * 1000L
         );
         initiator.sendMessage(TextUtils.translation(translationKeyPrefix + ".start.initiator", toArgs()), false);
         receiver.sendMessage(TextUtils.translation(translationKeyPrefix + ".start.receiver", toArgs()), false);
@@ -61,7 +61,7 @@ class TpaRequest {
 
     Object[] toArgs() {
         return new Object[]{
-                BlossomTpa.CONFIG.timeout,
+                BlossomTpa.getConfig().timeout,
                 initiator,
                 receiver,
                 new CommandTextBuilder("/tpacancel")

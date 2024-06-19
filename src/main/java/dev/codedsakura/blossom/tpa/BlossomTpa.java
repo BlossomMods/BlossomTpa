@@ -3,12 +3,10 @@ package dev.codedsakura.blossom.tpa;
 import com.mojang.brigadier.Command;
 import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
-import dev.codedsakura.blossom.lib.BlossomLib;
-import dev.codedsakura.blossom.lib.config.ConfigManager;
+import dev.codedsakura.blossom.lib.mod.BlossomMod;
 import dev.codedsakura.blossom.lib.permissions.Permissions;
 import dev.codedsakura.blossom.lib.teleport.TeleportUtils;
 import dev.codedsakura.blossom.lib.text.TextUtils;
-import dev.codedsakura.blossom.lib.utils.CustomLogger;
 import net.fabricmc.api.ModInitializer;
 import net.minecraft.command.argument.EntityArgumentType;
 import net.minecraft.server.command.ServerCommandSource;
@@ -22,42 +20,56 @@ import java.util.Optional;
 import static net.minecraft.server.command.CommandManager.argument;
 import static net.minecraft.server.command.CommandManager.literal;
 
-public class BlossomTpa implements ModInitializer {
-    static BlossomTpaConfig CONFIG = ConfigManager.register(BlossomTpaConfig.class, "BlossomTpa.json", newConfig -> CONFIG = newConfig);
-    public static final Logger LOGGER = CustomLogger.createLogger("BlossomTpa");
+public class BlossomTpa extends BlossomMod<BlossomTpaConfig> implements ModInitializer {
     private final ArrayList<TpaRequest> activeTpas = new ArrayList<>();
+    private static BlossomTpa self;
+
+    public BlossomTpa() {
+        super(BlossomTpaConfig.class);
+        self = this;
+    }
+
+    @Override
+    public String getName() {
+        return "BlossomTpa";
+    }
+
+    public static Logger getLogger() {
+        return self.logger;
+    }
+
+    public static BlossomTpaConfig getConfig() {
+        return self.config;
+    }
 
     @Override
     public void onInitialize() {
-        BlossomLib.addCommand(literal("tpa")
-                .requires(Permissions.require("blossom.tpa", true)
-                        .or(Permissions.require("blossom.tpa.command.tpa", true)))
+        register();
+
+        addCommand(literal("tpa")
+                .requires(Permissions.require("blossom.tpa.command.tpa", true))
             .then(argument("target", EntityArgumentType.player())
                 .executes(this::runTpaTo)));
 
-        BlossomLib.addCommand(literal("tpahere")
-                .requires(Permissions.require("blossom.tpa.here", true)
-                        .or(Permissions.require("blossom.tpa.command.tpahere", true)))
+        addCommand(literal("tpahere")
+                .requires(Permissions.require("blossom.tpa.command.tpahere", true))
             .then(argument("target", EntityArgumentType.player())
                 .executes(this::runTpaHere)));
 
-        BlossomLib.addCommand(literal("tpaaccept")
-                .requires(Permissions.require("blossom.tpa", true)
-                        .or(Permissions.require("blossom.tpa.command.tpaaccept", true)))
+        addCommand(literal("tpaaccept")
+                .requires(Permissions.require("blossom.tpa.command.tpaaccept", true))
             .executes(this::acceptTpaAuto)
             .then(argument("target", EntityArgumentType.player())
                 .executes(this::acceptTpaTarget)));
 
-        BlossomLib.addCommand(literal("tpadeny")
-                .requires(Permissions.require("blossom.tpa", true)
-                        .or(Permissions.require("blossom.tpa.command.tpadeny", true)))
+        addCommand(literal("tpadeny")
+                .requires(Permissions.require("blossom.tpa.command.tpadeny", true))
             .executes(this::denyTpaAuto)
             .then(argument("target", EntityArgumentType.player())
                 .executes(this::denyTpaTarget)));
 
-        BlossomLib.addCommand(literal("tpacancel")
-                .requires(Permissions.require("blossom.tpa", true)
-                        .or(Permissions.require("blossom.tpa.command.tpacancel", true)))
+        addCommand(literal("tpacancel")
+                .requires(Permissions.require("blossom.tpa.command.tpacancel", true))
             .executes(this::cancelTpaAuto)
             .then(argument("target", EntityArgumentType.player())
                 .executes(this::cancelTpaTarget)));
@@ -95,9 +107,7 @@ public class BlossomTpa implements ModInitializer {
 
         if (forced) {
             TeleportUtils.teleport(
-                    CONFIG.teleportation,
-                    CONFIG.standStill,
-                    CONFIG.cooldown,
+                    config.teleportation,
                     BlossomTpa.class,
                     tpaRequest.teleportWho,
                     () -> new TeleportUtils.TeleportDestination(tpaRequest.teleportTo)
@@ -145,9 +155,7 @@ public class BlossomTpa implements ModInitializer {
         TpaRequest tpaRequest = tpaRequestOptional.get();
         if (resolveState == ResolveState.ACCEPT) {
             TeleportUtils.teleport(
-                CONFIG.teleportation,
-                CONFIG.standStill,
-                CONFIG.cooldown,
+                    config.teleportation,
                 BlossomTpa.class,
                 tpaRequest.teleportWho,
                 () -> new TeleportUtils.TeleportDestination(tpaRequest.teleportTo)
@@ -185,7 +193,7 @@ public class BlossomTpa implements ModInitializer {
             return Command.SINGLE_SUCCESS;
         }
 
-        if (candidates.size() < 1) {
+        if (candidates.isEmpty()) {
             TextUtils.sendErr(ctx, "blossom.tpa.fail.none");
             return Command.SINGLE_SUCCESS;
         }

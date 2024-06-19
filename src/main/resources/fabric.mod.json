@@ -22,9 +22,7 @@
   "mixins": [],
   "depends": {
     "fabricloader": ">=0.14.3",
-    "minecraft": [
-      "${supported_versions}"
-    ],
+    "minecraft": "*",
     "blossom-lib": "^${blossomlib_version}"
   },
   "suggests": {
