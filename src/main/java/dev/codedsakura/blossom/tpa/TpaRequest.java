@@ -1,5 +1,6 @@
 package dev.codedsakura.blossom.tpa;
 
+import dev.codedsakura.blossom.lib.polyfill.PlaySound;
 import dev.codedsakura.blossom.lib.text.CommandTextBuilder;
 import dev.codedsakura.blossom.lib.text.TextUtils;
 import net.minecraft.server.network.ServerPlayerEntity;
@@ -40,19 +41,22 @@ class TpaRequest {
         String translationKeyPrefix = tpaHere ? TRANSLATION_KEY_TPA_HERE : TRANSLATION_KEY_TPA_TO;
         timer = new Timer();
         timer.schedule(
-            new TimerTask() {
-                @Override
-                public void run() {
-                    BlossomTpa.getLogger().info("{} timed out", TpaRequest.this);
-                    initiator.sendMessage(TextUtils.fTranslation(translationKeyPrefix + ".timeout.initiator", TextUtils.Type.ERROR, toArgs()), false);
-                    receiver.sendMessage(TextUtils.fTranslation(translationKeyPrefix + ".timeout.receiver", TextUtils.Type.ERROR, toArgs()), false);
-                    onTimeout.run();
-                }
-            },
+                new TimerTask() {
+                    @Override
+                    public void run() {
+                        BlossomTpa.getLogger().info("{} timed out", TpaRequest.this);
+                        initiator.sendMessage(TextUtils.fTranslation(translationKeyPrefix + ".timeout.initiator", TextUtils.Type.ERROR, toArgs()), false);
+                        receiver.sendMessage(TextUtils.fTranslation(translationKeyPrefix + ".timeout.receiver", TextUtils.Type.ERROR, toArgs()), false);
+                        PlaySound.maybePlayToPlayer(receiver, BlossomTpa.getConfig().timeoutRecipientSound);
+                        PlaySound.maybePlayToPlayer(initiator, BlossomTpa.getConfig().timeoutInitiatorSound);
+                        onTimeout.run();
+                    }
+                },
                 BlossomTpa.getConfig().timeout * 1000L
         );
         initiator.sendMessage(TextUtils.translation(translationKeyPrefix + ".start.initiator", toArgs()), false);
         receiver.sendMessage(TextUtils.translation(translationKeyPrefix + ".start.receiver", toArgs()), false);
+        PlaySound.maybePlayToPlayer(receiver, BlossomTpa.getConfig().requestRecipientSound);
     }
 
     void cancelTimeout() {
@@ -79,9 +83,9 @@ class TpaRequest {
     @Override
     public String toString() {
         return "TpaRequest[" +
-            "teleportWho=" + teleportWho.getUuidAsString() + ", " +
-            "teleportTo=" + teleportTo.getUuidAsString() + ", " +
-            "initiator=" + initiator.getUuidAsString() + ", " +
-            "receiver=" + receiver.getUuidAsString() + ']';
+                "teleportWho=" + teleportWho.getUuidAsString() + ", " +
+                "teleportTo=" + teleportTo.getUuidAsString() + ", " +
+                "initiator=" + initiator.getUuidAsString() + ", " +
+                "receiver=" + receiver.getUuidAsString() + ']';
     }
 }

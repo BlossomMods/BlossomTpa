@@ -5,6 +5,7 @@ import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import dev.codedsakura.blossom.lib.mod.BlossomMod;
 import dev.codedsakura.blossom.lib.permissions.Permissions;
+import dev.codedsakura.blossom.lib.polyfill.PlaySound;
 import dev.codedsakura.blossom.lib.teleport.TeleportUtils;
 import dev.codedsakura.blossom.lib.text.TextUtils;
 import net.fabricmc.api.ModInitializer;
@@ -168,6 +169,12 @@ public class BlossomTpa extends BlossomMod<BlossomTpaConfig> implements ModIniti
 
         tpaRequest.initiator.sendMessage(TextUtils.translation(localeRoot + ".initiator", tpaRequest.toArgs()), false);
         tpaRequest.receiver.sendMessage(TextUtils.translation(localeRoot + ".receiver", tpaRequest.toArgs()), false);
+
+        switch (resolveState) {
+            case ACCEPT -> PlaySound.maybePlayToPlayer(tpaRequest.initiator, config.acceptInitiatorSound);
+            case DENY -> PlaySound.maybePlayToPlayer(tpaRequest.initiator, config.denyInitiatorSound);
+            case CANCEL -> PlaySound.maybePlayToPlayer(tpaRequest.receiver, config.cancelRecipientSound);
+        }
 
         tpaRequest.cancelTimeout();
         activeTpas.remove(tpaRequest);

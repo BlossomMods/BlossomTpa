@@ -2,7 +2,9 @@ package dev.codedsakura.blossom.tpa;
 
 
 import dev.codedsakura.blossom.lib.config.BlossomConfig;
+import dev.codedsakura.blossom.lib.polyfill.PlaySound;
 import dev.codedsakura.blossom.lib.teleport.TeleportConfig;
+import dev.codedsakura.blossom.lib.utils.gson.SerializeNull;
 
 public class BlossomTpaConfig extends BlossomConfig {
     TeleportConfig teleportation = new TeleportConfig.Builder()
@@ -13,6 +15,19 @@ public class BlossomTpaConfig extends BlossomConfig {
     int timeout = 60;
 
     CommandOverrides commandOverrides = new CommandOverrides();
+
+    @SerializeNull
+    PlaySound.Sound requestRecipientSound = null;
+    @SerializeNull
+    PlaySound.Sound cancelRecipientSound = null;
+    @SerializeNull
+    PlaySound.Sound acceptInitiatorSound = null;
+    @SerializeNull
+    PlaySound.Sound denyInitiatorSound = null;
+    @SerializeNull
+    PlaySound.Sound timeoutRecipientSound = null;
+    @SerializeNull
+    PlaySound.Sound timeoutInitiatorSound = null;
 
     @Deprecated
     int standStill = 3;
