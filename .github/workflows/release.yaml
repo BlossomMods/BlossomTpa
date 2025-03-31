@@ -12,13 +12,13 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Generate changelog
         run: /bin/sh ./changes.sh ${{ github.ref_name }} ./changelog.out.md
 
       - name: Upload changelog
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: changelog
           path: ./changelog.out.md
@@ -31,17 +31,17 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Set up JDK 21
-        uses: actions/setup-java@v3
+        uses: actions/setup-java@v4
         with:
           java-version: '21'
           distribution: 'temurin'
           cache: 'gradle'
 
       - name: Download changelog
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
         with:
           name: changelog
 
@@ -59,13 +59,13 @@ jobs:
           CHANGELOG_PATH: "./changelog.out.md"
 
       - name: Upload build output (libs)
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: libs
           path: build/libs/
 
       - name: Upload build output (devlibs)
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: devlibs
           path: build/devlibs/
@@ -77,15 +77,15 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Download build output
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
         with:
           name: changelog
 
       - name: Download libs
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
         with:
           name: libs
           path: build/libs/
