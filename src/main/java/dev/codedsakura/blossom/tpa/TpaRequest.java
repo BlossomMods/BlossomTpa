@@ -2,7 +2,7 @@ package dev.codedsakura.blossom.tpa;
 
 import dev.codedsakura.blossom.lib.text.CommandTextBuilder;
 import dev.codedsakura.blossom.lib.text.TextUtils;
-import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.server.level.ServerPlayer;
 
 import java.util.Timer;
 import java.util.TimerTask;
@@ -10,15 +10,15 @@ import java.util.TimerTask;
 class TpaRequest {
     public static final String TRANSLATION_KEY_TPA_TO = "blossom.tpa.to";
     public static final String TRANSLATION_KEY_TPA_HERE = "blossom.tpa.here";
-    final ServerPlayerEntity teleportWho;
-    final ServerPlayerEntity teleportTo;
-    final ServerPlayerEntity initiator;
-    final ServerPlayerEntity receiver;
+    final ServerPlayer teleportWho;
+    final ServerPlayer teleportTo;
+    final ServerPlayer initiator;
+    final ServerPlayer receiver;
     final boolean tpaHere;
 
     private Timer timer;
 
-    TpaRequest(ServerPlayerEntity initiator, ServerPlayerEntity receiver, boolean tpaHere) {
+    TpaRequest(ServerPlayer initiator, ServerPlayer receiver, boolean tpaHere) {
         this.initiator = initiator;
         this.receiver = receiver;
         this.tpaHere = tpaHere;
@@ -44,15 +44,15 @@ class TpaRequest {
                 @Override
                 public void run() {
                     BlossomTpa.LOGGER.info("{} timed out", TpaRequest.this);
-                    initiator.sendMessage(TextUtils.fTranslation(translationKeyPrefix + ".timeout.initiator", TextUtils.Type.ERROR, toArgs()), false);
-                    receiver.sendMessage(TextUtils.fTranslation(translationKeyPrefix + ".timeout.receiver", TextUtils.Type.ERROR, toArgs()), false);
+                    initiator.displayClientMessage(TextUtils.fTranslation(translationKeyPrefix + ".timeout.initiator", TextUtils.Type.ERROR, toArgs()), false);
+                    receiver.displayClientMessage(TextUtils.fTranslation(translationKeyPrefix + ".timeout.receiver", TextUtils.Type.ERROR, toArgs()), false);
                     onTimeout.run();
                 }
             },
             BlossomTpa.CONFIG.timeout * 1000L
         );
-        initiator.sendMessage(TextUtils.translation(translationKeyPrefix + ".start.initiator", toArgs()), false);
-        receiver.sendMessage(TextUtils.translation(translationKeyPrefix + ".start.receiver", toArgs()), false);
+        initiator.displayClientMessage(TextUtils.translation(translationKeyPrefix + ".start.initiator", toArgs()), false);
+        receiver.displayClientMessage(TextUtils.translation(translationKeyPrefix + ".start.receiver", toArgs()), false);
     }
 
     void cancelTimeout() {
@@ -79,9 +79,9 @@ class TpaRequest {
     @Override
     public String toString() {
         return "TpaRequest[" +
-            "teleportWho=" + teleportWho.getUuidAsString() + ", " +
-            "teleportTo=" + teleportTo.getUuidAsString() + ", " +
-            "initiator=" + initiator.getUuidAsString() + ", " +
-            "receiver=" + receiver.getUuidAsString() + ']';
+            "teleportWho=" + teleportWho.getStringUUID() + ", " +
+            "teleportTo=" + teleportTo.getStringUUID() + ", " +
+            "initiator=" + initiator.getStringUUID() + ", " +
+            "receiver=" + receiver.getStringUUID() + ']';
     }
 }

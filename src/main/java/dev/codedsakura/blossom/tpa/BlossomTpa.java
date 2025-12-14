@@ -10,17 +10,17 @@ import dev.codedsakura.blossom.lib.teleport.TeleportUtils;
 import dev.codedsakura.blossom.lib.text.TextUtils;
 import dev.codedsakura.blossom.lib.utils.CustomLogger;
 import net.fabricmc.api.ModInitializer;
-import net.minecraft.command.argument.EntityArgumentType;
-import net.minecraft.server.command.ServerCommandSource;
-import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.commands.CommandSourceStack;
+import net.minecraft.commands.arguments.EntityArgument;
+import net.minecraft.server.level.ServerPlayer;
 import org.apache.logging.log4j.core.Logger;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import static net.minecraft.server.command.CommandManager.argument;
-import static net.minecraft.server.command.CommandManager.literal;
+import static net.minecraft.commands.Commands.argument;
+import static net.minecraft.commands.Commands.literal;
 
 public class BlossomTpa implements ModInitializer {
     static BlossomTpaConfig CONFIG = ConfigManager.register(BlossomTpaConfig.class, "BlossomTpa.json", newConfig -> CONFIG = newConfig);
@@ -32,41 +32,41 @@ public class BlossomTpa implements ModInitializer {
         BlossomLib.addCommand(literal("tpa")
                 .requires(Permissions.require("blossom.tpa", true)
                         .or(Permissions.require("blossom.tpa.command.tpa", true)))
-            .then(argument("target", EntityArgumentType.player())
+            .then(argument("target", EntityArgument.player())
                 .executes(this::runTpaTo)));
 
         BlossomLib.addCommand(literal("tpahere")
                 .requires(Permissions.require("blossom.tpa.here", true)
                         .or(Permissions.require("blossom.tpa.command.tpahere", true)))
-            .then(argument("target", EntityArgumentType.player())
+            .then(argument("target", EntityArgument.player())
                 .executes(this::runTpaHere)));
 
         BlossomLib.addCommand(literal("tpaaccept")
                 .requires(Permissions.require("blossom.tpa", true)
                         .or(Permissions.require("blossom.tpa.command.tpaaccept", true)))
             .executes(this::acceptTpaAuto)
-            .then(argument("target", EntityArgumentType.player())
+            .then(argument("target", EntityArgument.player())
                 .executes(this::acceptTpaTarget)));
 
         BlossomLib.addCommand(literal("tpadeny")
                 .requires(Permissions.require("blossom.tpa", true)
                         .or(Permissions.require("blossom.tpa.command.tpadeny", true)))
             .executes(this::denyTpaAuto)
-            .then(argument("target", EntityArgumentType.player())
+            .then(argument("target", EntityArgument.player())
                 .executes(this::denyTpaTarget)));
 
         BlossomLib.addCommand(literal("tpacancel")
                 .requires(Permissions.require("blossom.tpa", true)
                         .or(Permissions.require("blossom.tpa.command.tpacancel", true)))
             .executes(this::cancelTpaAuto)
-            .then(argument("target", EntityArgumentType.player())
+            .then(argument("target", EntityArgument.player())
                 .executes(this::cancelTpaTarget)));
     }
 
 
-    private int runTpa(CommandContext<ServerCommandSource> ctx, boolean tpaHere) throws CommandSyntaxException {
-        ServerPlayerEntity initiator = ctx.getSource().getPlayerOrThrow();
-        ServerPlayerEntity receiver = EntityArgumentType.getPlayer(ctx, "target");
+    private int runTpa(CommandContext<CommandSourceStack> ctx, boolean tpaHere) throws CommandSyntaxException {
+        ServerPlayer initiator = ctx.getSource().getPlayerOrException();
+        ServerPlayer receiver = EntityArgument.getPlayer(ctx, "target");
 
         if (initiator.equals(receiver)) {
             TextUtils.sendErr(ctx, "blossom.tpa.fail.to-self");
@@ -117,18 +117,18 @@ public class BlossomTpa implements ModInitializer {
         return Command.SINGLE_SUCCESS;
     }
 
-    private int runTpaTo(CommandContext<ServerCommandSource> ctx) throws CommandSyntaxException {
+    private int runTpaTo(CommandContext<CommandSourceStack> ctx) throws CommandSyntaxException {
         return runTpa(ctx, false);
     }
 
-    private int runTpaHere(CommandContext<ServerCommandSource> ctx) throws CommandSyntaxException {
+    private int runTpaHere(CommandContext<CommandSourceStack> ctx) throws CommandSyntaxException {
         return runTpa(ctx, true);
     }
 
 
     private enum ResolveState {ACCEPT, DENY, CANCEL}
 
-    private int resolveTpa(CommandContext<ServerCommandSource> ctx, ServerPlayerEntity receiver, ServerPlayerEntity initiator, ResolveState resolveState) {
+    private int resolveTpa(CommandContext<CommandSourceStack> ctx, ServerPlayer receiver, ServerPlayer initiator, ResolveState resolveState) {
         Optional<TpaRequest> tpaRequestOptional = activeTpas.stream()
             .filter(request -> request.receiver.equals(receiver) && request.initiator.equals(initiator))
             .findFirst();
@@ -158,23 +158,23 @@ public class BlossomTpa implements ModInitializer {
             (tpaRequest.tpaHere ? "here." : "to.") +
             resolveState.toString().toLowerCase();
 
-        tpaRequest.initiator.sendMessage(TextUtils.translation(localeRoot + ".initiator", tpaRequest.toArgs()), false);
-        tpaRequest.receiver.sendMessage(TextUtils.translation(localeRoot + ".receiver", tpaRequest.toArgs()), false);
+        tpaRequest.initiator.displayClientMessage(TextUtils.translation(localeRoot + ".initiator", tpaRequest.toArgs()), false);
+        tpaRequest.receiver.displayClientMessage(TextUtils.translation(localeRoot + ".receiver", tpaRequest.toArgs()), false);
 
         tpaRequest.cancelTimeout();
         activeTpas.remove(tpaRequest);
         return Command.SINGLE_SUCCESS;
     }
 
-    private int resolveTpaAuto(CommandContext<ServerCommandSource> ctx, ResolveState resolveState) {
+    private int resolveTpaAuto(CommandContext<CommandSourceStack> ctx, ResolveState resolveState) {
         List<TpaRequest> candidates;
         if (resolveState == ResolveState.CANCEL) {
-            ServerPlayerEntity initiator = ctx.getSource().getPlayer();
+            ServerPlayer initiator = ctx.getSource().getPlayer();
             candidates = activeTpas.stream()
                 .filter(request -> request.initiator.equals(initiator))
                 .toList();
         } else {
-            ServerPlayerEntity receiver = ctx.getSource().getPlayer();
+            ServerPlayer receiver = ctx.getSource().getPlayer();
             candidates = activeTpas.stream()
                 .filter(request -> request.receiver.equals(receiver))
                 .toList();
@@ -194,35 +194,35 @@ public class BlossomTpa implements ModInitializer {
     }
 
 
-    private int acceptTpaAuto(CommandContext<ServerCommandSource> ctx) {
+    private int acceptTpaAuto(CommandContext<CommandSourceStack> ctx) {
         return resolveTpaAuto(ctx, ResolveState.ACCEPT);
     }
 
-    private int acceptTpaTarget(CommandContext<ServerCommandSource> ctx) throws CommandSyntaxException {
-        ServerPlayerEntity receiver = ctx.getSource().getPlayer();
-        ServerPlayerEntity initiator = EntityArgumentType.getPlayer(ctx, "target");
+    private int acceptTpaTarget(CommandContext<CommandSourceStack> ctx) throws CommandSyntaxException {
+        ServerPlayer receiver = ctx.getSource().getPlayer();
+        ServerPlayer initiator = EntityArgument.getPlayer(ctx, "target");
         return resolveTpa(ctx, receiver, initiator, ResolveState.ACCEPT);
     }
 
 
-    private int denyTpaAuto(CommandContext<ServerCommandSource> ctx) {
+    private int denyTpaAuto(CommandContext<CommandSourceStack> ctx) {
         return resolveTpaAuto(ctx, ResolveState.DENY);
     }
 
-    private int denyTpaTarget(CommandContext<ServerCommandSource> ctx) throws CommandSyntaxException {
-        ServerPlayerEntity receiver = ctx.getSource().getPlayer();
-        ServerPlayerEntity initiator = EntityArgumentType.getPlayer(ctx, "target");
+    private int denyTpaTarget(CommandContext<CommandSourceStack> ctx) throws CommandSyntaxException {
+        ServerPlayer receiver = ctx.getSource().getPlayer();
+        ServerPlayer initiator = EntityArgument.getPlayer(ctx, "target");
         return resolveTpa(ctx, receiver, initiator, ResolveState.DENY);
     }
 
 
-    private int cancelTpaAuto(CommandContext<ServerCommandSource> ctx) {
+    private int cancelTpaAuto(CommandContext<CommandSourceStack> ctx) {
         return resolveTpaAuto(ctx, ResolveState.CANCEL);
     }
 
-    private int cancelTpaTarget(CommandContext<ServerCommandSource> ctx) throws CommandSyntaxException {
-        ServerPlayerEntity receiver = EntityArgumentType.getPlayer(ctx, "target");
-        ServerPlayerEntity initiator = ctx.getSource().getPlayer();
+    private int cancelTpaTarget(CommandContext<CommandSourceStack> ctx) throws CommandSyntaxException {
+        ServerPlayer receiver = EntityArgument.getPlayer(ctx, "target");
+        ServerPlayer initiator = ctx.getSource().getPlayer();
         return resolveTpa(ctx, receiver, initiator, ResolveState.CANCEL);
     }
 }
