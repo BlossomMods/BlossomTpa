@@ -44,15 +44,15 @@ class TpaRequest {
                 @Override
                 public void run() {
                     BlossomTpa.LOGGER.info("{} timed out", TpaRequest.this);
-                    initiator.displayClientMessage(TextUtils.fTranslation(translationKeyPrefix + ".timeout.initiator", TextUtils.Type.ERROR, toArgs()), false);
-                    receiver.displayClientMessage(TextUtils.fTranslation(translationKeyPrefix + ".timeout.receiver", TextUtils.Type.ERROR, toArgs()), false);
+                    initiator.sendSystemMessage(TextUtils.fTranslation(translationKeyPrefix + ".timeout.initiator", TextUtils.Type.ERROR, toArgs()), false);
+                    receiver.sendSystemMessage(TextUtils.fTranslation(translationKeyPrefix + ".timeout.receiver", TextUtils.Type.ERROR, toArgs()), false);
                     onTimeout.run();
                 }
             },
             BlossomTpa.CONFIG.timeout * 1000L
         );
-        initiator.displayClientMessage(TextUtils.translation(translationKeyPrefix + ".start.initiator", toArgs()), false);
-        receiver.displayClientMessage(TextUtils.translation(translationKeyPrefix + ".start.receiver", toArgs()), false);
+        initiator.sendSystemMessage(TextUtils.translation(translationKeyPrefix + ".start.initiator", toArgs()), false);
+        receiver.sendSystemMessage(TextUtils.translation(translationKeyPrefix + ".start.receiver", toArgs()), false);
     }
 
     void cancelTimeout() {

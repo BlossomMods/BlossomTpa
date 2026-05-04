@@ -158,8 +158,8 @@ public class BlossomTpa implements ModInitializer {
             (tpaRequest.tpaHere ? "here." : "to.") +
             resolveState.toString().toLowerCase();
 
-        tpaRequest.initiator.displayClientMessage(TextUtils.translation(localeRoot + ".initiator", tpaRequest.toArgs()), false);
-        tpaRequest.receiver.displayClientMessage(TextUtils.translation(localeRoot + ".receiver", tpaRequest.toArgs()), false);
+        tpaRequest.initiator.sendSystemMessage(TextUtils.translation(localeRoot + ".initiator", tpaRequest.toArgs()), false);
+        tpaRequest.receiver.sendSystemMessage(TextUtils.translation(localeRoot + ".receiver", tpaRequest.toArgs()), false);
 
         tpaRequest.cancelTimeout();
         activeTpas.remove(tpaRequest);
